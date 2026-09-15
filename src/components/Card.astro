@@ -1,0 +1,14 @@
+---
+import Icon from './Icon.astro';
+const { item } = Astro.props;
+---
+<a class="project-card" href={item.href} data-category={item.category} data-search={`${item.title} ${item.description} ${item.tags.join(' ')}`.toLowerCase()}>
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top"><span class="card-icon"><Icon name={item.icon} size={25}/></span><span class="card-category">{item.category}</span></div>
+      <h3>{item.title}</h3><p>{item.short}</p>
+      <div class="card-bottom"><div class="tags">{item.tags.map((tag: string) => <span>{tag}</span>)}</div><Icon name="arrow" size={19}/></div>
+    </div>
+    <div class="card-back" aria-hidden="true"><span class="card-icon"><Icon name={item.icon} size={24}/></span><h3>{item.title}</h3><p>{item.description}</p><span class="card-read">Explore documentation <Icon name="arrow" size={18}/></span></div>
+  </div>
+</a>

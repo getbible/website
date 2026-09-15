@@ -1,0 +1,34 @@
+---
+import Icon from '../components/Icon.astro';
+import { SITE, SUPPORT } from '../data/catalog.mjs';
+import '../styles/global.css';
+const { title = 'Scripture for every application.', description = 'Open Bible APIs, tools and applications. Build with Scripture, connect AI, and help bring the Bible to the world.', slug = 'index', home = false } = Astro.props;
+const url = new URL(slug === '404' ? '/404.html' : Astro.url.pathname, SITE).href;
+const markdown = slug === 'index' ? '/index.md' : `/${slug}.md`;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>{title} | Get Bible</title><meta name="description" content={description}/><link rel="canonical" href={url}/>
+  <meta name="color-scheme" content="light dark"/><meta name="theme-color" content="#082737"/>
+  <meta property="og:title" content={`${title} | Get Bible`}/><meta property="og:description" content={description}/><meta property="og:type" content="website"/><meta property="og:url" content={url}/>
+  <link rel="icon" type="image/png" href="/favicon.png"/><link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+  <link rel="alternate" type="text/markdown" title="Markdown" href={markdown}/><link rel="alternate" type="text/plain" title="AI documentation index" href="/llms.txt"/>
+  <script is:inline>try{const t=localStorage.getItem('getbible-theme');document.documentElement.dataset.theme=t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch{document.documentElement.dataset.theme='light'}</script>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify({'@context':'https://schema.org','@type': home?'WebSite':'TechArticle',name:title,description,url,inLanguage:'en',publisher:{'@type':'Organization',name:'Get Bible',url:SITE,parentOrganization:{'@type':'Organization',name:'trueChristian.church',url:'https://trueChristian.church'}}})}/>
+</head>
+<body class:list={{'is-home': home}} data-markdown={markdown}>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <header class="site-header"><div class="header-inner">
+    <a class="brand" href="/" aria-label="Get Bible home"><img src="/images/getbible-220.png" alt="" width="43" height="43"/><span>Get<span class="brand-light">Bible</span><span class="brand-dot">.</span></span></a>
+    <nav class="main-nav" aria-label="Main navigation"><a href="/api/" aria-current={Astro.url.pathname.startsWith('/api')?'page':undefined}>APIs</a><a href="/project/" aria-current={Astro.url.pathname.startsWith('/project')?'page':undefined}>Projects</a><a href="/mcp/" aria-current={Astro.url.pathname.startsWith('/mcp')?'page':undefined}>MCP & AI</a><a href="/about/">Our mission</a><a href={SUPPORT}>Support <Icon name="external" size={12}/></a></nav>
+    <div class="header-actions"><button class="icon-button" id="search-open" aria-label="Search documentation"><Icon name="search" size={20}/></button><button class="icon-button" id="theme-toggle" aria-label="Switch color theme"><span class="theme-sun"><Icon name="sun" size={20}/></span><span class="theme-moon"><Icon name="moon" size={20}/></span></button><a class="header-donate" href="/donate/"><Icon name="heart" size={17}/> Support the mission</a><button class="icon-button mobile-menu" id="menu-toggle" aria-label="Open navigation" aria-expanded="false"><Icon name="menu"/></button></div>
+  </div></header>
+  <main id="main"><slot/></main>
+  <footer class="site-footer"><div class="footer-top"><div class="footer-brand"><a class="brand" href="/"><img src="/images/getbible-220.png" alt="" width="43" height="43"/><span>Get<span class="brand-light">Bible</span><span class="brand-dot">.</span></span></a><p>Scripture for every application.<br/>The Bible for all the world.</p></div><div><h2>Build</h2><a href="/api/">API documentation</a><a href="/project/">Projects & tools</a><a href="/mcp/">MCP & AI</a><a href="/tokens/">Access & tokens</a></div><div><h2>Connect</h2><a href={SUPPORT}>Get support ↗</a><a href="/contribute/">Get involved</a><a href="/donate/">Make a donation</a><a href="mailto:getBible@TrueChristian.church">Email the team</a></div><div><h2>Explore</h2><a href="https://getbible.life">Read the Bible ↗</a><a href="https://github.com/getbible">GitHub ↗</a><a href="/about/">About the project</a><a href="/llms.txt">AI documentation index</a></div></div><div class="footer-bottom"><p>A project of <a href="https://trueChristian.church">trueChristian.church</a>.</p><div><a href={markdown}>This page as Markdown</a><span>Built in the open. Shared with purpose.</span></div></div></footer>
+  <dialog id="search-dialog" aria-labelledby="search-title"><div class="search-head"><h2 id="search-title">Search the documentation</h2><button id="search-close" class="icon-button" aria-label="Close search"><Icon name="close"/></button></div><label class="sr-only" for="docs-search">Search documentation</label><input id="docs-search" type="search" placeholder="Try “tokens”, “Python” or “v3”…" autocomplete="off"/><p id="search-status" aria-live="polite">Type to search APIs, projects and guides.</p><div id="search-results"></div><p class="search-foot">Press Escape to close · Ctrl / ⌘ K to search</p></dialog>
+  <div class="toast" role="status" id="toast" hidden></div>
+  <script src="../scripts/client.ts"></script>
+</body>
+</html>

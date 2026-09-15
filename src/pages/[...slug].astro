@@ -1,0 +1,25 @@
+---
+import Base from '../layouts/Base.astro';
+import Sidebar from '../components/Sidebar.astro';
+import Icon from '../components/Icon.astro';
+import Catalog from '../components/Catalog.astro';
+import { allPages, readDonation } from '../lib/content.mjs';
+import { apiFor, cards, SUPPORT } from '../data/catalog.mjs';
+export function getStaticPaths(){return allPages().filter(page=>page.slug!=='index').map(page=>({params:{slug:page.slug},props:{page}}));}
+const { page } = Astro.props;
+const api=apiFor(page.slug);
+const version=api?.versions.find(v=>page.slug.split('/')[2]===v);
+const bankDetails=page.slug==='donate'?readDonation():'';
+const collection=api&&version?`/postman/${api.id}-${version}.json`:null;
+const listing=page.slug==='project'||page.slug==='api';
+const displayTitle=page.title.replace(/`/g,'');
+---
+<Base title={displayTitle} description={page.description} slug={page.slug}>
+{listing ? <div class="listing-page"><div class="page-actions"><a href="?format=markdown" data-markdown-toggle><Icon name="markdown" size={16}/> Markdown</a><button data-share><Icon name="share" size={15}/> Share</button></div><p class="eyebrow">{page.slug==='api'?'THE FOUNDATION':'BUILD WITH GET BIBLE'}</p><h1>{displayTitle}</h1><p class="listing-intro">{page.description}</p><Catalog items={cards.filter(card=>page.slug==='api'?card.category==='APIs':['Apps','Tools','Builders'].includes(card.category))} projectOnly={page.slug==='project'}/><div class="prose" set:html={page.html}/></div> :
+<div class="docs-shell"><Sidebar slug={page.slug}/><article class="docs-main"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Get Bible</a><Icon name="chevron" size={12}/>{page.slug.startsWith('api/')&&<><a href="/api/">APIs</a><Icon name="chevron" size={12}/></>}{page.slug.startsWith('project/')&&<><a href="/project/">Projects</a><Icon name="chevron" size={12}/></>}{api&&version&&<><a href={`/api/${api.id}/`}>{api.title}</a><Icon name="chevron" size={12}/></>}<span>{version||displayTitle}</span></nav><div class="page-actions"><a href="?format=markdown" data-markdown-toggle><Icon name="markdown" size={16}/> Markdown</a><a href={`/${page.slug}.md`}>Raw .md</a><button data-share><Icon name="share" size={15}/> Share</button><a href={`https://github.com/getbible/website/blob/main/${page.generated ? 'scripts/openapi.mjs' : 'src/content/'+page.slug+'.md'}`}><Icon name="git" size={15}/> Source</a></div><p class="eyebrow">{api?'API DOCUMENTATION':page.slug.startsWith('project/')?'PROJECT DOCUMENTATION':page.slug==='mcp'?'MODEL CONTEXT PROTOCOL':'GET BIBLE'}</p><h1 class="docs-title">{displayTitle}</h1>
+{api&&<><nav class="version-tabs" aria-label="API version"><span>Documentation</span><a href={`/api/${api.id}/`} aria-current={!version?'page':undefined}>Overview</a>{api.versions.map(v=><a href={`/api/${api.id}/${v}/`} aria-current={version===v?'page':undefined}>{v}</a>)}</nav><div class="api-links"><a href={`${api.host}/`}>API home <Icon name="external" size={13}/></a>{version&&<><a href={`${api.host}/${version}/`}>Upstream documentation <Icon name="external" size={13}/></a><a href={`${api.host}/${version}/openapi.json`}>Live OpenAPI JSON <Icon name="external" size={13}/></a><a href={collection!} download>Postman collection ↓</a><button data-copy={`${api.host}/${version}/openapi.json`}>Copy import URL</button></>}</div></>}
+{page.slug==='donate'&&bankDetails&&<section class="donation-details prose" aria-label="Bank donation details"><h2>Donate by bank transfer</h2><div set:html={bankDetails}/></section>}
+<div class="prose" set:html={page.html}/>
+<aside class="doc-help"><div><strong>Building something? We’re here to help.</strong><p>One support desk for every Get Bible project.</p></div><a href={SUPPORT}>Get support ↗</a></aside>
+</article><nav class="docs-toc" aria-label="On this page"><h2>On this page</h2>{page.headings.map((heading:any)=><a class:list={{'toc-sub':heading.depth===3}} href={`#${heading.id}`}>{heading.text}</a>)}<hr/><a href="/tokens/">Access & tokens</a><a href={SUPPORT}>Get support ↗</a></nav></div>}
+</Base>

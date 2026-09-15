@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Catalog from '../components/Catalog.astro';
+import { cards } from '../data/catalog.mjs';
+---
+<Base home>
+  <section class="hero"><div class="hero-content"><div class="hero-copy"><p class="eyebrow"><span class="small-rule"></span> OPEN SCRIPTURE. ENDLESS POSSIBILITIES.</p><h1>The Word.<br/>For the world.<br/><span>Built for developers.</span></h1><p class="hero-description">Bring the Bible into what you build. Open APIs, practical tools, and a shared mission to make Scripture accessible everywhere.</p><div class="hero-actions"><a class="button primary" href="/api/">Start building <Icon name="arrow" size={18}/></a><a class="button ghost" href="#explore">Explore the ecosystem</a></div><p class="hero-note">Open source <span>·</span> Versioned APIs <span>·</span> Built for reuse</p></div><div class="hero-right"><div class="request-card"><div class="request-top"><span><i></i><i></i><i></i></span><span>YOUR FIRST BIBLE REQUEST</span><button class="icon-button" data-copy-target="hero-code" aria-label="Copy cURL example"><Icon name="copy" size={17}/></button></div><div class="request-body"><span class="method-label">GET</span><span class="request-url">api.getbible.net/v2/kjv/43/3.json</span><pre id="hero-code"><code>curl --fail-with-body \
+  'https://api.getbible.net/v2/kjv/43/3.json'</code></pre><div class="response-label">JSON RESPONSE · KJV</div><pre class="json-preview"><code><span class="syntax-brace">{'{'}</span>
+  <span class="syntax-key">"book_name"</span>: <span class="syntax-value">"John"</span>,
+  <span class="syntax-key">"chapter"</span>: <span class="syntax-number">3</span>,
+  <span class="syntax-key">"verses"</span>: [ {'{'}
+    <span class="syntax-key">"verse"</span>: <span class="syntax-number">16</span>,
+    <span class="syntax-key">"text"</span>: <span class="syntax-value">"For God so loved the world…"</span>
+  {'}'} ]
+<span class="syntax-brace">{'}'}</span></code></pre><p class="response-note">Excerpt · John 3:16 · selected fields and shortened text</p></div><a class="request-footer" href="/api/bible/v2/">Meet the Bible API <Icon name="arrow" size={16}/></a></div><div class="hero-caption"><span class="caption-line"></span> One request. A world of possibility.</div></div></div><div class="hero-bottom"><span>SCRIPTURE</span><span>SEARCH</span><span>STUDY</span><span>APPLICATIONS</span><span>AI & MCP</span></div></section>
+  <div class="content-wide"><Catalog items={cards}/></div>
+  <section class="mcp-feature"><div><p class="eyebrow">MEET SCRIPTURE IN YOUR WORKFLOW</p><h2>Your AI tools.<br/>Connected to the Bible.</h2><p>Give compatible AI assistants access to Scripture, references and study resources through the Get Bible MCP server.</p><a class="button primary" href="/mcp/">Connect with MCP <Icon name="arrow" size={18}/></a></div><div class="connection-card"><div class="connection-symbol"><Icon name="sparkles" size={28}/></div><span class="eyebrow">STREAMABLE HTTP</span><code>https://mcp.getbible.net/</code><p>Start with anonymous access.<br/>Explore local Python and client setup.</p><a href="/mcp/#connect-in-chatgpt-developer-mode">ChatGPT setup <Icon name="arrow" size={17}/></a></div></section>
+  <section class="mission-section content-wide"><div><p class="eyebrow">A SHARED PURPOSE</p><h2>More than an API.<br/>A way to share the Word.</h2></div><div><p>Get Bible exists to put Scripture within reach of people everywhere. We build the infrastructure; developers, churches and communities bring it into everyday life.</p><div class="text-links"><a href="/about/">Our mission <Icon name="arrow" size={16}/></a><a href="/contribute/">Find your part <Icon name="arrow" size={16}/></a></div></div></section>
+  <div class="home-tools content-wide"><a href="/?format=markdown" data-markdown-toggle><Icon name="markdown" size={18}/> View as Markdown</a><button data-share><Icon name="share" size={17}/> Share this page</button></div>
+</Base>
