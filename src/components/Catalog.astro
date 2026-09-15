@@ -1,0 +1,12 @@
+---
+import Card from './Card.astro';
+const { items, projectOnly = false } = Astro.props;
+const categories = projectOnly ? ['All', 'Tools', 'Apps', 'Builders'] : ['All', ...new Set(items.map((item: any) => item.category))];
+---
+<section class="catalog" id="explore" aria-label="Explore Get Bible">
+  <div class="section-heading"><div><p class="eyebrow">THE GET BIBLE ECOSYSTEM</p><h2>Find your starting point.</h2></div><p>From a single verse to your next application.<br/>Explore the pieces. Build something meaningful.</p></div>
+  <div class="catalog-controls"><div class="filter-list" role="group" aria-label="Filter projects">{categories.map(category => <button type="button" class:list={['filter', {active: category === 'All'}]} aria-pressed={category === 'All'} data-filter={category}>{category}</button>)}</div><label class="catalog-search"><span class="sr-only">Filter the catalog by name</span><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="m15 15 6 6"/></svg><input type="search" id="catalog-query" placeholder="Find an API or project…"/></label></div>
+  <div class="card-grid">{items.map((item: any) => <Card item={item}/>)}</div>
+  <p class="catalog-empty" hidden>No matches. Try another search or choose All.</p>
+  <p class="sr-only" id="catalog-count" aria-live="polite"></p>
+</section>

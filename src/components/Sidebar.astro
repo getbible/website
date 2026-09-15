@@ -1,0 +1,10 @@
+---
+import { apis, projects, SUPPORT } from '../data/catalog.mjs';
+const { slug } = Astro.props;
+---
+<nav class="docs-sidebar" aria-label="Documentation navigation"><details open><summary>Browse documentation</summary><div>
+  <h2>Get started</h2><a href="/api/" aria-current={slug==='api'?'page':undefined}>API overview</a><a href="/tokens/" aria-current={slug==='tokens'?'page':undefined}>Access & tokens</a><a href="/mcp/" aria-current={slug==='mcp'?'page':undefined}>MCP & AI</a>
+  <h2>APIs</h2>{apis.map(api=><><a href={`/api/${api.id}/`} aria-current={slug===`api/${api.id}`?'page':undefined}>{api.title}</a><div class="sidebar-versions">{api.versions.map(version=><a href={`/api/${api.id}/${version}/`} aria-current={slug===`api/${api.id}/${version}`?'page':undefined}>{version}</a>)}</div></>)}
+  <h2>Projects</h2>{projects.map(project=><a href={`/project/${project.id}/`} aria-current={slug===`project/${project.id}`?'page':undefined}>{project.title}</a>)}<a href="/project/builders/" aria-current={slug==='project/builders'?'page':undefined}>API builders</a>
+  <h2>The mission</h2><a href="/about/">About Get Bible</a><a href="/contribute/">Get involved</a><a href="/donate/">Support the mission</a><a href={SUPPORT}>Support desk ↗</a>
+</div></details></nav>
